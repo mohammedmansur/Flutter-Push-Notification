@@ -37,19 +37,19 @@ class _RegisterState extends State<Register> {
             ElevatedButton(
                 onPressed: () async {
                   await _firebaseAuth.signInAnonymously().then((value) {
-                    String? token;
-                    _firebaseMessaging
-                        .getToken()
-                        .then((value) => token = value);
-                    _firebaseFirestore
-                        .collection('test')
-                        .doc(value.user!.uid)
-                        .set({
-                      'uid': value.user!.uid,
-                      'name': _controller.value.text.trim(),
-                      'token': token,
+                    _firebaseMessaging.getToken().then((token) {
+                      _firebaseFirestore
+                          .collection('test')
+                          .doc(value.user!.uid)
+                          .set({
+                        'uid': value.user!.uid,
+                        'name': _controller.value.text,
+                        'token': token,
+                      });
                     });
+
                     Navigator.pushNamed(context, '/token');
+                    _controller.clear();
                   });
                 },
                 child: Text('signIn Anonymously')),
