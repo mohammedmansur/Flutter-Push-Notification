@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pushnot/PushNotification/Notification.dart';
+import 'package:pushnot/PushNotification/Register.dart';
 import 'package:pushnot/PushNotification/dataModel.dart';
 
 class Token extends StatefulWidget {
@@ -13,6 +15,8 @@ class Token extends StatefulWidget {
 }
 
 class _TokenState extends State<Token> {
+  FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +33,13 @@ class _TokenState extends State<Token> {
         ],
       ),
       bottomNavigationBar: ElevatedButton(
-          onPressed: () {
-            snedNotiDialog('Send to All');
-          },
+          onPressed: () => NotificationScreen.showNotification(
+              title: 'helooo',
+              body: 'my name is mohammed',
+              payload: 'HamaApplication')
+          // snedNotiDialog('Send to All');
+
+          ,
           child: Text('send notification')),
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
@@ -53,6 +61,8 @@ class _TokenState extends State<Token> {
             return ListView.builder(
               itemCount: productList.length,
               itemBuilder: (context, index) {
+                tokenCode = productList[index].token;
+
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
@@ -74,6 +84,7 @@ class _TokenState extends State<Token> {
     );
   }
 
+  String? tokenCode;
 // Text(productList[index].token ?? 'no token')
   snedNotiDialog(String title) {
     showDialog(
@@ -109,13 +120,26 @@ class _TokenState extends State<Token> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Send',
+                      'Send now',
                       style: TextStyle(fontSize: 25),
                     ),
                     Icon(Icons.send),
                   ],
                 ),
-              )
+              ),
+              SimpleDialogOption(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Send after 5 second',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Icon(Icons.send),
+                  ],
+                ),
+              ),
             ],
           );
         });

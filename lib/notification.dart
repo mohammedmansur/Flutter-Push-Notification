@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
+    // description
     importance: Importance.high,
     playSound: true);
 
@@ -128,23 +129,23 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ElevatedButton(
-              onPressed: () {
-                Future.delayed(
-                  Duration(seconds: 5),
-                  () {
-                    showNotification();
-                  },
-                );
-              },
-              child: Text('Send after 5 secound')),
-          ElevatedButton(
-              onPressed: () {
-                showNotification();
-              },
-              child: Text('Send Notification'))
-        ]),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: showNotification,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
       ),
     );
   }

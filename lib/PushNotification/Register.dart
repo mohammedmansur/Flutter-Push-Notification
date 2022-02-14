@@ -3,6 +3,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pushnot/PushNotification/Notification.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -17,6 +19,10 @@ class _RegisterState extends State<Register> {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  static String? tokenCode;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +44,9 @@ class _RegisterState extends State<Register> {
                 onPressed: () async {
                   await _firebaseAuth.signInAnonymously().then((value) {
                     _firebaseMessaging.getToken().then((token) {
+                      setState(() {
+                        tokenCode = token;
+                      });
                       _firebaseFirestore
                           .collection('test')
                           .doc(value.user!.uid)
@@ -46,13 +55,16 @@ class _RegisterState extends State<Register> {
                         'name': _controller.value.text,
                         'token': token,
                       });
+                      Navigator.pushNamed(context, '/token');
+                      _controller.clear();
                     });
-
-                    Navigator.pushNamed(context, '/token');
-                    _controller.clear();
                   });
                 },
                 child: Text('signIn Anonymously')),
+            ElevatedButton(
+                onPressed: () => NotificationScreen.showNotification(
+                    title: 'hhh', body: 'aaaa', payload: 'jajbaj'),
+                child: Text('send'))
           ],
         ),
       ),
