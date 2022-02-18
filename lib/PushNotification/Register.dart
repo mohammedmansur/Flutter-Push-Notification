@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pushnot/PushNotification/Notification.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pushnot/PushNotification/Token.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -55,16 +56,15 @@ class _RegisterState extends State<Register> {
                         'name': _controller.value.text,
                         'token': token,
                       });
-                      Navigator.pushNamed(context, '/token');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Token()),
+                      );
                       _controller.clear();
                     });
                   });
                 },
                 child: Text('signIn Anonymously')),
-            ElevatedButton(
-                onPressed: () => NotificationScreen.showNotification(
-                    title: 'hhh', body: 'aaaa', payload: 'jajbaj'),
-                child: Text('send'))
           ],
         ),
       ),

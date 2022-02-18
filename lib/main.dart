@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pushnot/PushNotification/Register.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -143,7 +144,15 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 showNotification();
               },
-              child: Text('Send Notification'))
+              child: Text('Send Notification')),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Register()),
+                );
+              },
+              child: Text('Register'))
         ]),
       ),
     );
